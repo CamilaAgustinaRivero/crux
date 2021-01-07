@@ -1,6 +1,7 @@
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 
+
 def get_conversation(chatbot):
     talk = True
     while talk:
@@ -11,8 +12,19 @@ def get_conversation(chatbot):
             talk = False
 
 def main():
-    chatbot = ChatBot('Crux')
-    #chatbot.storage.drop()
+    botname = 'Crux'
+    chatbot = ChatBot(
+        botname,
+        logic_adapters = [
+        {
+            'import_path': 'adapters.MyLogicAdapter'},
+        {
+            'import_path':'chatterbot.logic.BestMatch',
+            'default_response': 'No entiendo. ¿Podrías utilizar otras palabras?'
+        }
+        ])
+    # Borra cualquier entrenamiento anterior
+    chatbot.storage.drop()
     trainer = ListTrainer(chatbot)
     conversation = []
     file = None
